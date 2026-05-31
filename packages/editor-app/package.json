@@ -1,0 +1,13 @@
+{
+  "name": "@threadpilled/editor-app",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 4830",
+    "build": "vite build"
+  },
+  "dependencies": {
+    "@threadpilled/editor": "workspace:*"
+  }
+}

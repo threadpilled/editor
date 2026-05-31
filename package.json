@@ -1,0 +1,13 @@
+{
+  "name": "@threadpilled/editor-monorepo",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "cd packages/editor-app && npx vite --port 4830",
+    "build": "cd packages/editor-sdk && npx tsc && cd ../editor-app && npx vite build",
+    "typecheck": "npx tsc --noEmit -p packages/editor-sdk/tsconfig.json"
+  }
+}

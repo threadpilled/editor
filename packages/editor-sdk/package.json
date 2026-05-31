@@ -1,0 +1,24 @@
+{
+  "name": "@threadpilled/editor",
+  "version": "0.1.0",
+  "description": "Embeddable ThreadPilled diagram editor SDK",
+  "type": "module",
+  "main": "src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./react": "./src/adapters/react.tsx",
+    "./solidjs": "./src/adapters/solidjs.tsx",
+    "./web-component": "./src/adapters/web-component.ts"
+  },
+  "dependencies": {
+    "@threadpilled/embed": "workspace:*"
+  },
+  "peerDependencies": {
+    "solid-js": ">=1.9.0",
+    "react": ">=18.0.0"
+  },
+  "peerDependenciesMeta": {
+    "solid-js": { "optional": true },
+    "react": { "optional": true }
+  }
+}
