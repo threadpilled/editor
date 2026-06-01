@@ -82,6 +82,34 @@ export class CommandExecutor {
     }
   }
 
+  selectAll(): void {
+    const { pills } = this.store.getState();
+    this.store.dispatch({ type: 'select', ids: pills.map(p => p.id) });
+  }
+
+  duplicateSelected(): void {
+    const { selectedIds, pills } = this.store.getState();
+    for (const id of selectedIds) {
+      const pill = pills.find(p => p.id === id);
+      if (pill) {
+        const newId = generateId('pill');
+        this.execute({
+          type: 'addPill',
+          pill: { ...pill, id: newId, position: { x: pill.position.x + 30, y: pill.position.y + 30 } },
+        });
+      }
+    }
+  }
+
+  updateThread(threadId: string, changes: Partial<ThreadData>): void {
+    const state = this.store.getState();
+    const thread = state.threads.find(t => t.id === threadId);
+    if (!thread) return;
+    const updated = { ...thread, ...changes };
+    this.execute({ type: 'removeThread', threadId });
+    this.execute({ type: 'addThread', thread: updated });
+  }
+
   private computeInverse(command: EditorCommand): EditorCommand | null {
     const state = this.store.getState();
     switch (command.type) {
