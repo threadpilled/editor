@@ -53,7 +53,7 @@ function renderFallbackSVG(props: EditorCanvasProps): string {
     svg += `<line
       x1="${from.position.x + 60}" y1="${from.position.y + 20}"
       x2="${to.position.x + 60}" y2="${to.position.y + 20}"
-      stroke="${selected ? 'var(--tpde-accent, #60a5fa)' : 'var(--tpd-border, #3f3f46)'}"
+      stroke="${selected ? 'var(--tp-accent, #00ff9f)' : 'var(--tp-border, #2a2a3a)'}"
       stroke-width="${selected ? 2.5 : 1.5}"
       marker-end="url(#tpde-arrow)"
       data-thread-id="${thread.id}"
@@ -67,7 +67,7 @@ function renderFallbackSVG(props: EditorCanvasProps): string {
   }
 
   svg += `<defs><marker id="tpde-arrow" viewBox="0 0 10 10" refX="10" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
-    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--tpd-border, #3f3f46)" />
+    <path d="M 0 0 L 10 5 L 0 10 z" fill="var(--tp-border, #2a2a3a)" />
   </marker></defs>`;
 
   for (const pill of pills) {
@@ -77,11 +77,10 @@ function renderFallbackSVG(props: EditorCanvasProps): string {
     svg += `<g data-pill-id="${pill.id}" class="tpde-pill${selected ? ' selected' : ''}" transform="translate(${pill.position.x}, ${pill.position.y})">
       <rect width="${w}" height="${h}" rx="20" ry="20"
         fill="${pill.color}"
-        stroke="${selected ? 'var(--tpde-accent, #60a5fa)' : 'transparent'}"
+        stroke="${selected ? 'var(--tp-accent, #00ff9f)' : 'transparent'}"
         stroke-width="${selected ? 2 : 0}"
-        opacity="0.9"
       />
-      <text x="${w / 2}" y="${h / 2 + 5}" text-anchor="middle" fill="white" font-size="13" font-weight="500">${pill.content}</text>
+      <text x="${w / 2}" y="${h / 2 + 5}" text-anchor="middle" fill="var(--tp-fg, #e8e8f0)" font-size="13" font-weight="500">${pill.content}</text>
     </g>`;
   }
 
