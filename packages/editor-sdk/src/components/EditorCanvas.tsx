@@ -13,7 +13,22 @@ export interface EditorCanvasProps {
   onPanChange?: (pan: { x: number; y: number }) => void;
 }
 
-export function renderCanvasSVG(props: EditorCanvasProps): string {
+function renderEmbedSVG(source: string, config: CanvasConfig): string | null {
+  try {
+    const { parse } = require('@threadpilled/embed') as typeof import('@threadpilled/embed');
+    const { renderToSVG } = require('@threadpilled/embed') as typeof import('@threadpilled/embed');
+    const diagram = parse(source);
+    return renderToSVG(diagram, {
+      theme: 'dark',
+      showGrid: config.grid !== false,
+      gridSize: config.gridSize ?? 20,
+    });
+  } catch {
+    return null;
+  }
+}
+
+function renderFallbackSVG(props: EditorCanvasProps): string {
   const { pills, threads, selectedIds } = props.state;
   const { zoom, pan } = props;
   const grid = props.config.grid !== false;
@@ -72,6 +87,14 @@ export function renderCanvasSVG(props: EditorCanvasProps): string {
 
   svg += '</svg>';
   return svg;
+}
+
+export function renderCanvasSVG(props: EditorCanvasProps): string {
+  const embedSvg = renderEmbedSVG(props.state.source, props.config);
+  if (embedSvg) {
+    return `<div class="tpde-canvas-svg" style="transform: scale(${props.zoom}) translate(${props.pan.x}px, ${props.pan.y}px);">${embedSvg}</div>`;
+  }
+  return renderFallbackSVG(props);
 }
 
 export function createCanvasHTML(props: EditorCanvasProps): string {

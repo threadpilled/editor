@@ -10,7 +10,11 @@
     "skipLibCheck": true,
     "outDir": "dist",
     "declaration": true,
-    "declarationDir": "dist"
+    "declarationDir": "dist",
+    "paths": {
+      "@threadpilled/embed": ["../../../libs/embed/src/index.ts"]
+    }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": ["src/adapters/react.tsx", "src/adapters/solidjs.tsx"]
 }

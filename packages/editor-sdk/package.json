@@ -11,7 +11,7 @@
     "./web-component": "./src/adapters/web-component.ts"
   },
   "dependencies": {
-    "@threadpilled/embed": "workspace:*"
+    "@threadpilled/embed": "file:../../../../threadpilled/libs/embed"
   },
   "peerDependencies": {
     "solid-js": ">=1.9.0",
