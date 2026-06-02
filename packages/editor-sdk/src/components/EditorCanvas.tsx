@@ -13,12 +13,30 @@ export interface EditorCanvasProps {
   onPanChange?: (pan: { x: number; y: number }) => void;
 }
 
-function renderEmbedSVG(source: string, config: CanvasConfig): string | null {
+let embedAvailable: boolean | null = null;
+let embedParse: typeof import('@threadpilled/embed').parse | null = null;
+let embedRenderToSVG: typeof import('@threadpilled/embed').renderToSVG | null = null;
+
+async function loadEmbed(): Promise<boolean> {
+  if (embedAvailable !== null) return embedAvailable;
   try {
-    const { parse } = require('@threadpilled/embed') as typeof import('@threadpilled/embed');
-    const { renderToSVG } = require('@threadpilled/embed') as typeof import('@threadpilled/embed');
-    const diagram = parse(source);
-    return renderToSVG(diagram, {
+    const mod = await import('@threadpilled/embed');
+    embedParse = mod.parse;
+    embedRenderToSVG = mod.renderToSVG;
+    embedAvailable = true;
+  } catch {
+    embedAvailable = false;
+  }
+  return embedAvailable;
+}
+
+loadEmbed();
+
+function renderEmbedSVG(source: string, config: CanvasConfig): string | null {
+  if (!embedParse || !embedRenderToSVG) return null;
+  try {
+    const diagram = embedParse(source);
+    return embedRenderToSVG(diagram, {
       theme: 'dark',
       showGrid: config.grid !== false,
       gridSize: config.gridSize ?? 20,
