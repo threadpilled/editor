@@ -86,6 +86,8 @@
 .tpde-pill { cursor: pointer; }
 .tpde-pill:hover rect { opacity: 1; }
 .tpde-pill.selected rect { stroke: var(--tp-accent, #00ff9f); stroke-width: 2; }
+.tpde-pill.thread-from rect { animation: tpde-pulse 1s ease-in-out infinite; }
+@keyframes tpde-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
 
 .tpde-thread { cursor: pointer; }
 .tpde-thread-label {

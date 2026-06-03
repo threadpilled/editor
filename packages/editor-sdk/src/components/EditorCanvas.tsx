@@ -11,6 +11,7 @@ export interface EditorCanvasProps {
   onCanvasClick?: (x: number, y: number) => void;
   onZoomChange?: (zoom: number) => void;
   onPanChange?: (pan: { x: number; y: number }) => void;
+  threadFromPillId?: string;
 }
 
 let embedAvailable: boolean | null = null;
@@ -90,13 +91,17 @@ function renderFallbackSVG(props: EditorCanvasProps): string {
 
   for (const pill of pills) {
     const selected = selectedIds.has(pill.id);
+    const isThreadFrom = pill.id === props.threadFromPillId;
     const w = pill.width ?? 120;
     const h = pill.height ?? 40;
-    svg += `<g data-pill-id="${pill.id}" class="tpde-pill${selected ? ' selected' : ''}" transform="translate(${pill.position.x}, ${pill.position.y})">
+    const strokeColor = isThreadFrom ? 'var(--tp-accent, #00ff9f)' : selected ? 'var(--tp-accent, #00ff9f)' : 'transparent';
+    const strokeDash = isThreadFrom ? 'stroke-dasharray="6 3"' : '';
+    svg += `<g data-pill-id="${pill.id}" class="tpde-pill${selected ? ' selected' : ''}${isThreadFrom ? ' thread-from' : ''}" transform="translate(${pill.position.x}, ${pill.position.y})">
       <rect width="${w}" height="${h}" rx="20" ry="20"
         fill="${pill.color}"
-        stroke="${selected ? 'var(--tp-accent, #00ff9f)' : 'transparent'}"
-        stroke-width="${selected ? 2 : 0}"
+        stroke="${strokeColor}"
+        stroke-width="${selected || isThreadFrom ? 2 : 0}"
+        ${strokeDash}
       />
       <text x="${w / 2}" y="${h / 2 + 5}" text-anchor="middle" fill="var(--tp-fg, #e8e8f0)" font-size="13" font-weight="500">${pill.content}</text>
     </g>`;

@@ -125,6 +125,7 @@ export class ThreadPilledEditorController {
       activeTool: this.activeTool,
       zoom: this.zoom,
       pan: this.pan,
+      threadFromPillId: this.threadFromPill ?? undefined,
     });
 
     if (showSidebar) {
@@ -329,13 +330,19 @@ export class ThreadPilledEditorController {
     document.addEventListener('mousemove', this.boundMouseMove);
     document.addEventListener('mouseup', this.boundMouseUp);
 
-    // Zoom with wheel
+    // Zoom with wheel — center on cursor position
     this.container.addEventListener('wheel', (e) => {
       const canvas = (e.target as Element).closest('.tpde-canvas');
       if (!canvas) return;
       e.preventDefault();
+      const rect = canvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
       const factor = e.deltaY > 0 ? 0.9 : 1.1;
-      this.zoom = Math.max(0.1, Math.min(3, this.zoom * factor));
+      const newZoom = Math.max(0.1, Math.min(3, this.zoom * factor));
+      this.pan.x = mx / newZoom - (mx / this.zoom - this.pan.x);
+      this.pan.y = my / newZoom - (my / this.zoom - this.pan.y);
+      this.zoom = newZoom;
       this.render();
     }, { passive: false });
 
