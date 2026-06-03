@@ -1,4 +1,5 @@
-const AUTH_BASE_URL = 'http://localhost:3000';
+const AUTH_APP_URL = import.meta.env.VITE_TP_AUTH_URL || 'http://localhost:6091';
+const AUTH_API_URL = import.meta.env.VITE_TP_API_URL || 'http://localhost:6090';
 const CLIENT_ID = 'threadpilled-editor';
 const REDIRECT_URI = `${window.location.origin}/callback`;
 const SCOPES = 'openid profile email diagrams:read diagrams:write';
@@ -46,7 +47,7 @@ export async function login(): Promise<void> {
     code_challenge_method: 'S256',
   });
 
-  window.location.href = `${AUTH_BASE_URL}/api/auth/oauth2/authorize?${params}`;
+  window.location.href = `${AUTH_APP_URL}/api/auth/oauth2/authorize?${params}`;
 }
 
 export async function handleCallback(code: string, state: string): Promise<AuthTokens> {
@@ -55,7 +56,7 @@ export async function handleCallback(code: string, state: string): Promise<AuthT
   const verifier = sessionStorage.getItem('tp_pkce_verifier');
   if (!verifier) throw new Error('Missing PKCE verifier');
 
-  const res = await fetch(`${AUTH_BASE_URL}/api/auth/oauth2/token`, {
+  const res = await fetch(`${AUTH_API_URL}/api/auth/oauth2/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({
@@ -90,7 +91,7 @@ export function getStoredTokens(): AuthTokens | null {
 
 export async function getUser(accessToken: string): Promise<AuthUser | null> {
   try {
-    const res = await fetch(`${AUTH_BASE_URL}/api/auth/get-session`, {
+    const res = await fetch(`${AUTH_API_URL}/api/auth/get-session`, {
       headers: { Authorization: `Bearer ${accessToken}` },
     });
     if (!res.ok) return null;
