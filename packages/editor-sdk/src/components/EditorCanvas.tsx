@@ -52,7 +52,7 @@ function renderFallbackSVG(props: EditorCanvasProps): string {
   const { zoom, pan } = props;
   const grid = props.config.grid !== false;
 
-  let svg = `<svg class="tpde-canvas-svg" viewBox="0 0 2000 1500" preserveAspectRatio="xMidYMid meet"
+  let svg = `<svg class="tpde-canvas-svg" viewBox="0 0 2000 1500" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Diagram canvas"
     style="transform: scale(${zoom}) translate(${pan.x}px, ${pan.y}px);">`;
 
   if (grid) {

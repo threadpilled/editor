@@ -33,7 +33,7 @@ export function createSidebarHTML(props: EditorSidebarProps): string {
   const width = props.config.width ?? 380;
 
   const tabButtons = tabs.map(tab =>
-    `<button class="tpde-sidebar-tab${props.activeTab === tab ? ' active' : ''}" data-tab="${tab}" title="${TAB_LABELS[tab]}">${TAB_ICONS[tab]}</button>`
+    `<button class="tpde-sidebar-tab${props.activeTab === tab ? ' active' : ''}" data-tab="${tab}" title="${TAB_LABELS[tab]}" aria-label="${TAB_LABELS[tab]}" role="tab" aria-selected="${props.activeTab === tab}">${TAB_ICONS[tab]}</button>`
   ).join('');
 
   let panelContent = '';

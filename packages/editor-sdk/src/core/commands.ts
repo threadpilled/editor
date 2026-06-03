@@ -74,11 +74,20 @@ export class CommandExecutor {
 
   deleteSelected(): void {
     const { selectedIds, pills, threads } = this.store.getState();
+    const pillIds = new Set<string>();
     for (const id of selectedIds) {
       const pill = pills.find(p => p.id === id);
-      if (pill) { this.execute({ type: 'removePill', pillId: id }); continue; }
+      if (pill) { pillIds.add(id); continue; }
       const thread = threads.find(t => t.id === id);
       if (thread) this.execute({ type: 'removeThread', threadId: id });
+    }
+    for (const thread of threads) {
+      if (pillIds.has(thread.fromPillId) || pillIds.has(thread.toPillId)) {
+        this.execute({ type: 'removeThread', threadId: thread.id });
+      }
+    }
+    for (const id of pillIds) {
+      this.execute({ type: 'removePill', pillId: id });
     }
   }
 

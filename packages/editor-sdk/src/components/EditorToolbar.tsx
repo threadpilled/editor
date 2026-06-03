@@ -66,7 +66,9 @@ export function createToolbarHTML(props: EditorToolbarProps): string {
       class="tpde-toolbar-btn${active ? ' active' : ''}${disabled ? ' disabled' : ''}"
       data-tool="${item}"
       title="${TOOL_LABELS[item]}"
-      ${disabled ? 'disabled' : ''}
+      aria-label="${TOOL_LABELS[item]}"
+      ${disabled ? 'disabled aria-disabled="true"' : ''}
+      role="button"
     >${TOOL_ICONS[item]}</button>`;
   }).join('');
 
